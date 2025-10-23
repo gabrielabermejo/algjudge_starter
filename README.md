@@ -71,5 +71,5 @@ curl -X POST http://localhost:3000/submissions \
 - Swagger en `/docs`.
 
 
-> Actualizado desde Windows – 22/10/2025
+> Actualizado 2025
 
