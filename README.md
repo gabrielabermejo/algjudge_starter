@@ -1,14 +1,13 @@
 
 # AlgJudge Starter (Primera Entrega)
 
-Este esqueleto te ayuda a empezar **rápido** con la primera entrega:
 - Clean Architecture básica (carpetas sugeridas).
 - `docker-compose.yml` con **Postgres** y **Redis** listos.
 - Esqueleto de **worker_stub** con Bull (cola en Redis).
 - `src/main.ts` con **Swagger** habilitado.
 - `.env.example` con variables mínimas.
 
-## Pasos rápidos
+## Pasos instalación
 1) Instala Node 18+ y Docker Desktop.
 2) Crea el proyecto Nest en `apps/api`:
    ```bash
