@@ -3,7 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap() {\r
+  console.log('?? AlgJudge API iniciando', new Date().toISOString(), 'NODE_ENV=', process.env.NODE_ENV || 'development');
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
 
