@@ -14,7 +14,6 @@
    cd apps/api
    npx @nestjs/cli new . --package-manager npm
    ```
-   Si te pide sobreescribir, elige **Yes** (este starter no trae los archivos Nest por defecto).
 3) Instala dependencias en `apps/api`:
    ```bash
    npm i @nestjs/config @nestjs/jwt passport passport-jwt bcrypt
@@ -71,7 +70,6 @@ curl -X POST http://localhost:3000/submissions \
 - Endpoint `/metrics` (puede devolver contadores simples por ahora).
 - Swagger en `/docs`.
 
-¡Éxitos! Ajusta y amplía según el enunciado.
 
 > Actualizado desde Windows – 22/10/2025
 
