@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
-import { AuthService } from './auth.service';
+import { AuthService } from '../application/auth.service';
 
 class LoginDto {
   @IsEmail()

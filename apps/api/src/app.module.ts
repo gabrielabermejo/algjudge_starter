@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HealthModule } from './health/health.module';
-import { AuthModule } from './auth/auth.module';
-import { ChallengesModule } from './challenges/challenges.module';
-import { SubmissionsModule } from './submissions/submissions.module';
+import { HealthModule } from './health/infrastructure/health.module';
+import { AuthModule } from './auth/infrastructure/auth.module';
+import { ChallengesModule } from './challenges/infrastructure/challenges.module';
+import { SubmissionsModule } from './submissions/infrastructure/submissions.module';
 
 @Module({
   imports: [HealthModule, AuthModule, ChallengesModule, SubmissionsModule],

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
-import { ChallengesController } from './challenges.controller';
+import { ChallengesController } from '../interfaces/challenges.controller';
 
 @Module({
   providers: [ChallengesService],
