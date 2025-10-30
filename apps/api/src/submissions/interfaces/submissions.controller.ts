@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { SubmissionsService } from './submissions.service';
+import { SubmissionsService } from '../application/submissions.service';
 import { AuthGuard } from '@nestjs/passport';
 import { IsString } from 'class-validator';
 
