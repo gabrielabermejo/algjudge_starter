@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Challenge } from './challenge.entity';
+import { Challenge } from '../../domain/challenge';
 import { randomUUID } from 'crypto';
 
 @Injectable()

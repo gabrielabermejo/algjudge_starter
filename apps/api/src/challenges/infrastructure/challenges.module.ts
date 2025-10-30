@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ChallengesService } from './challenges.service';
+import { ChallengesService } from '../application/challenges.service';
 import { ChallengesController } from '../interfaces/challenges.controller';
 
 @Module({

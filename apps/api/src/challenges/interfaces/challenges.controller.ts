@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { ChallengesService } from './challenges.service';
+import { ChallengesService } from '../application/challenges.service';
 import { CreateChallengeDto, UpdateChallengeDto } from '../dto';
 import { Roles } from '../../common/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
