@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ChallengesService } from '../application/challenges.service';
 import { CreateChallengeDto, UpdateChallengeDto } from '../dto';
@@ -14,14 +14,16 @@ export class ChallengesController {
   @ApiOperation({ summary: 'Listar retos', description: 'Retorna todos los retos disponibles (público).' })
   @ApiResponse({ status: 200, description: 'Listado de retos devuelto correctamente.' })
   @Get()
-  list() { return this.svc.list(); }
+  async list(@Query('state') state?: string) { 
+    return this.svc.list(state); 
+  }
 
   @ApiOperation({ summary: 'Obtener reto por ID' })
   @ApiParam({ name: 'id', description: 'ID del reto', example: 'b8d9f7a2-1234-4a9c-9c01-aaaa1111bbbb' })
   @ApiResponse({ status: 200, description: 'Reto encontrado.' })
   @ApiResponse({ status: 404, description: 'Reto no encontrado.' })
   @Get(':id')
-  get(@Param('id') id: string) { return this.svc.get(id); }
+  async get(@Param('id') id: string) { return this.svc.get(id); }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -32,7 +34,7 @@ export class ChallengesController {
   @ApiResponse({ status: 401, description: 'No autenticado.' })
   @ApiResponse({ status: 403, description: 'No autorizado.' })
   @Post()
-  create(@Body() dto: CreateChallengeDto) { return this.svc.create(dto); }
+  async create(@Body() dto: CreateChallengeDto) { return this.svc.create(dto); }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -45,7 +47,7 @@ export class ChallengesController {
   @ApiResponse({ status: 403, description: 'No autorizado.' })
   @ApiResponse({ status: 404, description: 'Reto no encontrado.' })
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateChallengeDto) { return this.svc.update(id,dto); }
+  async update(@Param('id') id: string, @Body() dto: UpdateChallengeDto) { return this.svc.update(id,dto); }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -57,5 +59,5 @@ export class ChallengesController {
   @ApiResponse({ status: 403, description: 'No autorizado.' })
   @ApiResponse({ status: 404, description: 'Reto no encontrado.' })
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.svc.remove(id); }
+  async remove(@Param('id') id: string) { return this.svc.remove(id); }
 }

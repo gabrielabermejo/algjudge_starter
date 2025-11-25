@@ -1,33 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Challenge } from '../../domain/challenge';
-import { randomUUID } from 'crypto';
+import { ChallengesRepository } from '../infrastructure/challenges.repository';
+import { Challenge, ChallengeState } from '../../domain/entities/challenge.entity';
+import { CreateChallengeDto, UpdateChallengeDto } from '../dto';
 
 @Injectable()
 export class ChallengesService {
-  private data: Challenge[] = [];
+  constructor(private repo: ChallengesRepository) {}
 
-  list(): Challenge[] { return this.data; }
-  get(id: string): Challenge {
-    const c = this.data.find(x => x.id === id);
+  async list(state?: string): Promise<Challenge[]> {
+    if (state && (state === 'draft' || state === 'published' || state === 'archived')) {
+      return this.repo.findByState(state as ChallengeState);
+    }
+    return this.repo.findAll();
+  }
+
+  async get(id: string): Promise<Challenge> {
+    const c = await this.repo.findById(id);
     if (!c) throw new NotFoundException('Challenge not found');
     return c;
   }
-  create(input: Omit<Challenge,'id'>): Challenge {
-    const c: Challenge = { id: randomUUID(), ...input };
-    this.data.push(c);
-    return c;
+
+  async create(input: CreateChallengeDto): Promise<Challenge> {
+    return this.repo.create(input);
   }
-  update(id: string, input: Omit<Challenge,'id'>): Challenge {
-    const ix = this.data.findIndex(x => x.id === id);
-    if (ix < 0) throw new NotFoundException('Challenge not found');
-    const c: Challenge = { id, ...input };
-    this.data[ix] = c;
-    return c;
+
+  async update(id: string, input: UpdateChallengeDto): Promise<Challenge> {
+    const exists = await this.repo.findById(id);
+    if (!exists) throw new NotFoundException('Challenge not found');
+    return this.repo.update(id, input);
   }
-  remove(id: string) {
-    const ix = this.data.findIndex(x => x.id === id);
-    if (ix < 0) throw new NotFoundException('Challenge not found');
-    this.data.splice(ix,1);
-    return { deleted: true };
+
+  async remove(id: string): Promise<void> {
+    const exists = await this.repo.findById(id);
+    if (!exists) throw new NotFoundException('Challenge not found');
+    await this.repo.delete(id);
   }
 }

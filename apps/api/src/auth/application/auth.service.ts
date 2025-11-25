@@ -1,10 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../../users/application/users.service';
 
 type Role = 'ADMIN' | 'STUDENT';
 @Injectable()
 export class AuthService {
-  constructor(private jwt: JwtService) {}
+  constructor(
+    private jwt: JwtService,
+    private usersService: UsersService,
+  ) {}
 
   async login(email: string, password: string) {
     // DEMO: credenciales por .env o defaults
@@ -18,7 +22,11 @@ export class AuthService {
     if (email === stuEmail && password === stuPass) role = 'STUDENT';
     if (!role) throw new UnauthorizedException('Invalid credentials');
 
-    const payload = { sub: email, email, role };
+    // Buscar o crear usuario en BD y obtener su UUID
+    const userId = await this.usersService.findOrCreateByEmail(email, role);
+
+    // Usar el UUID del usuario en el JWT
+    const payload = { sub: userId, email, role };
     const token = await this.jwt.signAsync(payload, {
       secret: process.env.JWT_SECRET || 'supersecret',
       expiresIn: '2h',

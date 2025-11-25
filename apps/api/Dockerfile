@@ -1,15 +1,15 @@
-FROM node:18-alpine AS deps
+FROM node:20-alpine AS deps
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
 ENV PORT=3000

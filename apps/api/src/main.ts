@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { LoggingInterceptor } from './common/logging.interceptor';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -13,6 +14,9 @@ async function bootstrap() {
   app.useLogger(logger);
   app.enableCors();
 
+  // Interceptor para logs estructurados
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -23,7 +27,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('AlgJudge API')
-    .setDescription('API para juez en línea (Primera Entrega)')
+    .setDescription('API para juez en lï¿½nea (Primera Entrega)')
     .setVersion('0.1.0')
     .addBearerAuth()
     .build();

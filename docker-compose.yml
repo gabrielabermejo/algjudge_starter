@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: algjudge
       POSTGRES_DB: algjudge
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
 
@@ -23,12 +23,70 @@ services:
       - redis
     ports:
       - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
-  worker_stub:
-    build: ./apps/workers/worker_stub
+  # Runners (imágenes Docker para ejecutar código)
+  runner_python:
+    build: ./apps/workers/runners/python
+    image: algjudge-runner-python:latest
+
+  runner_node:
+    build: ./apps/workers/runners/node
+    image: algjudge-runner-node:latest
+
+  runner_cpp:
+    build: ./apps/workers/runners/cpp
+    image: algjudge-runner-cpp:latest
+
+  runner_java:
+    build: ./apps/workers/runners/java
+    image: algjudge-runner-java:latest
+
+  # Workers (procesan jobs de la cola)
+  worker_python:
+    build: ./apps/workers/worker_python
     env_file: .env
     depends_on:
       - redis
+      - api
+      - runner_python
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+
+  worker_node:
+    build: ./apps/workers/worker_node
+    env_file: .env
+    depends_on:
+      - redis
+      - api
+      - runner_node
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+
+  worker_cpp:
+    build: ./apps/workers/worker_cpp
+    env_file: .env
+    depends_on:
+      - redis
+      - api
+      - runner_cpp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+
+  worker_java:
+    build: ./apps/workers/worker_java
+    env_file: .env
+    depends_on:
+      - redis
+      - api
+      - runner_java
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
 
 volumes:
   dbdata:
